@@ -6,8 +6,8 @@ const cors = require("cors");
 const bodyparser = require("body-parser");
 
 const PORT = process.env.PORT || 8080;
-const connect = require("./config/db");
-const userRouter = require("./routes/user.router");
+const connect = require("./src/config/db");
+const userRouter = require("./src/routes/user.router");
 
 const app = express();
 app.use(express.json());
