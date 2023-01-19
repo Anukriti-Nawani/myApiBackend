@@ -20,7 +20,7 @@ app.post("/signup", async (req, res) => {
 		if (user) {
 			return res
 				.status(409)
-				.send("This email is already in use try with other email.");
+				.send("Email already exists");
 		}
 
 		let newUser = new UserModel({
@@ -40,11 +40,11 @@ app.post("/login", async (req, res) => {
 	const user = await UserModel.findOne({ email });
 	if (user && (await compareBcryptPassword(password, user.password))) {
 		return res.status(200).send({
-			message: "Login Success",
+			message: "Successfully login",
 			email: user.email,
 		});
 	} else {
-		return res.status(401).send("invalid credentials");
+		return res.status(401).send("Invalid Credentials");
 	}
 });
 
