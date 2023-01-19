@@ -1,23 +1,29 @@
-const express = require("express");
-const cors = require('cors')
-const { connection } = require("./Config/db");
-const { Signup } = require("./Routes/Signup.routes");
-const { Login } = require("./Routes/Login.routes");
-const app = express();
 require("dotenv").config();
 
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyparser = require("body-parser");
+
+const PORT = process.env.PORT || 8080;
+const connect = require("./config/db");
+const userRouter = require("./routes/user.router");
+
+const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 
-app.use('/signup', Signup);
-app.use('/login', Login)
+mongoose.set("strictQuery", false);
 
-app.listen(process.env.PORT, async () => {
-    try {
-        await connection;
-        console.log("Connected To DB");
-    } catch (err) {
-        console.log(err);
-    }
-    console.log("Listening To Port", process.env.PORT);
-})
+app.use("/user", userRouter);
+
+app.get("/", (req, res) => {
+	res.send("Bug Tracker");
+});
+
+app.listen(PORT, async () => {
+	connect();
+	console.log(`Listening at http://localhost:${PORT}`);
+});
